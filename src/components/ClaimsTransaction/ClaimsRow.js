@@ -1,16 +1,20 @@
 //import ClaimDisplay from "./ClaimDisplay";
 
-const ClaimsRow = (claim) => {
+import ClaimDetail from "./ClaimDetail";
 
-    //const [] = useState();
+const ClaimsRow = (props) => {
+     const click = () =>{
+      props.setSelectedClaim(props.claim);
+     }
+
     return(
-        <tr key ={claim.claimnumber}>
-            <td>{claim.claimnumber}</td>
-            <td>{claim.claimdate}</td>
-            <td>{claim.claimamount}</td>
-            <td>{claim.claimtype}</td>
-            <td>{claim.claimstatus}</td>
-            <td><button>Click</button></td>
+        <tr key ={props.claimnumber}>
+            <td>{props.claimnumber}</td>
+            <td>{props.claimdate}</td>
+            <td>{props.claimamount}</td>
+            <td>{props.claimtype}</td>
+            <td>{props.claimstatus}</td>
+            <td><button onClick = {click}>Click</button></td>
         </tr>
 
     );
