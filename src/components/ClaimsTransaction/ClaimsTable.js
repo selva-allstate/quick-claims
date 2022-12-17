@@ -1,4 +1,5 @@
 //import { useState } from "react";
+import { useState } from "react";
 import { getAllClaims } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
 import "./ClaimsTransaction.css";
@@ -13,8 +14,24 @@ const ClaimsTable = (props) => {
     //const [claimIndex, setClaimIndex] = useState(0);
     //const clicked_claim = allClaims[claimIndex];
     //console.log(clicked_claim);
-  
-    return (
+    const allStatuscodes = claims.map( claim => claim.status_code);
+    console.log(allStatuscodes);
+    const uniqueStatuscodes = [...new Set(allStatuscodes)];
+    console.log(uniqueStatuscodes);
+     
+    const [selectedStatuscode, setSelectedStatuscode] =  useState(uniqueStatuscodes[0]);
+    const changeStatuscode = (event) => {
+        const option = event.target.options.selectedIndex;
+        setSelectedStatuscode(uniqueStatuscodes[option]);
+    }
+    return ( <div>{selectedStatuscode}
+        
+        <div className="claimStatusSelector">
+          <label>Claim Status  </label>
+          <select onChange={changeStatuscode}>
+           {uniqueStatuscodes.map (statuscode => <option key={statuscode} value={statuscode}>{statuscode}</option>)}
+          </select>
+        </div>
         <table className="claimsTable">
             <thead>
             
@@ -31,7 +48,7 @@ const ClaimsTable = (props) => {
                 {
                 
                 claims.map((claim, index) => {
-                   return (
+                   return (claim.status_code === selectedStatuscode && (
                    <ClaimsRow setSelectedClaim={props.setSelectedClaim} 
                    claim={claim}
                     key={index} claimnumber={claim.claim_number} claimdate={claim.claim_date}
@@ -39,7 +56,7 @@ const ClaimsTable = (props) => {
                     claimstatus={claim.status_code}
                      />
                     
-                   )
+                   ))
                 })}
                 
                 
@@ -60,6 +77,7 @@ const ClaimsTable = (props) => {
             }
             </tbody>
         </table>
+        </div>
     );
 };
 export default ClaimsTable;
