@@ -32,7 +32,8 @@ const ClaimsTable = (props) => {
                 
                 claims.map((claim, index) => {
                    return (
-                   <ClaimsRow SelectedClaim={props.SelectedClaim} claim={claim}
+                   <ClaimsRow setSelectedClaim={props.setSelectedClaim} 
+                   claim={claim}
                     key={index} claimnumber={claim.claim_number} claimdate={claim.claim_date}
                     claimamount={claim.claim_amount} claimtype={claim.claim_type} 
                     claimstatus={claim.status_code}

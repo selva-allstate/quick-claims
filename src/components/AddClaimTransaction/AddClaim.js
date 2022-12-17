@@ -1,10 +1,10 @@
-import { useState } from 'react';
+//import { useState } from 'react';
 import { useReducer } from 'react';
 import './AddClaim.css';
 
 const AddClaim = () =>{
 
-    const [message, setMessage] = useState("");
+    //const [message, setMessage] = useState("");
 
     const initialNewClaimState ={policyNumber : "", claimNumber :"", claimAmount :"0",
     claimDate : new Date().toISOString().slice(0,10), statusCode:"0", claimType:""}
