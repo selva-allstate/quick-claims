@@ -1,3 +1,6 @@
+import axios from "axios"
+
+
 export const getAllClaims = () => {
     return [
         {policy_number: 101000000, claim_number: "5123450989", claim_amount: 1000, claim_date: "2022-01-31", status_code: 0,  claim_type: "PROPERTY"},
@@ -13,4 +16,16 @@ export const getAllClaims = () => {
         {policy_number: 111000000, claim_number: "5780432509", claim_amount: 500, claim_date: "2017-02-01",  status_code: 1, claim_type: "AUTO"},
         {policy_number: 112000000, claim_number: "8712096485", claim_amount: 100, claim_date: "2017-02-02",  status_code: 0, claim_type: "PET"}
     ]
+}
+
+//add transaction: POST /api/claim
+//update           PUT api/claim/142645
+
+export const addNewClaim = (claim) =>
+{
+    return axios({url : "http://localhost:8080/api/claim",
+                  method:"POST",
+                  headers: {"Accept" : "application/json", "Content-Type":"application/json"},
+                  data : claim
+                })
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+//import { useState } from "react";
 import { getAllClaims } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
 import "./ClaimsTransaction.css";
@@ -10,9 +10,9 @@ const ClaimsTable = (props) => {
     const allClaims = claims.map (claim => claim.claim_number);
     console.log(allClaims);
     //const [selectedClaim, setSelectedClaim] = useState(allClaims[0]);
-    const [claimIndex, setClaimIndex] = useState(0);
-    const clicked_claim = allClaims[claimIndex];
-    console.log(clicked_claim);
+    //const [claimIndex, setClaimIndex] = useState(0);
+    //const clicked_claim = allClaims[claimIndex];
+    //console.log(clicked_claim);
   
     return (
         <table className="claimsTable">
@@ -32,7 +32,7 @@ const ClaimsTable = (props) => {
                 
                 claims.map((claim, index) => {
                    return (
-                   <ClaimsRow setSelectedClaim={props.setSelectedClaim} claim={claim}
+                   <ClaimsRow SelectedClaim={props.SelectedClaim} claim={claim}
                     key={index} claimnumber={claim.claim_number} claimdate={claim.claim_date}
                     claimamount={claim.claim_amount} claimtype={claim.claim_type} 
                     claimstatus={claim.status_code}
