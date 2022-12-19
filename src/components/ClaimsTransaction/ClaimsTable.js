@@ -17,19 +17,21 @@ const ClaimsTable = (props) => {
     const allStatuscodes = claims.map( claim => claim.status_code);
     console.log(allStatuscodes);
     const uniqueStatuscodes = [...new Set(allStatuscodes)];
-    console.log(uniqueStatuscodes);
+    const uniqueStatuscodes1 =[...uniqueStatuscodes, "All"]
+    console.log(uniqueStatuscodes1);
      
-    const [selectedStatuscode, setSelectedStatuscode] =  useState(uniqueStatuscodes[0]);
+    const [selectedStatuscode, setSelectedStatuscode] =  useState(uniqueStatuscodes1[0]);
     const changeStatuscode = (event) => {
         const option = event.target.options.selectedIndex;
-        setSelectedStatuscode(uniqueStatuscodes[option]);
+        setSelectedStatuscode(uniqueStatuscodes1[option]);
     }
     return ( <div>{selectedStatuscode}
         
         <div className="claimStatusSelector">
           <label>Claim Status  </label>
           <select onChange={changeStatuscode}>
-           {uniqueStatuscodes.map (statuscode => <option key={statuscode} value={statuscode}>{statuscode}</option>)}
+            
+           {uniqueStatuscodes1.map (statuscode => <option key={statuscode} value={statuscode}>{statuscode}</option>)}
           </select>
         </div>
         <table className="claimsTable">
@@ -48,7 +50,7 @@ const ClaimsTable = (props) => {
                 {
                 
                 claims.map((claim, index) => {
-                   return (claim.status_code === selectedStatuscode && (
+                   return((claim.status_code === selectedStatuscode || selectedStatuscode === "All") && (
                    <ClaimsRow setSelectedClaim={props.setSelectedClaim} 
                    claim={claim}
                     key={index} claimnumber={claim.claim_number} claimdate={claim.claim_date}
