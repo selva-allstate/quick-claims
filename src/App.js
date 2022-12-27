@@ -10,15 +10,15 @@ import AddClaim from './components/AddClaimTransaction/AddClaim';
 
 function App() {
   const [SelectedClaim, setSelectedClaim] = useState(null);
- 
+  const [SearchClaim, setSearchClaim] = useState("");
   //setSelectedClaim(SelectedClaim);
    
   return (
     <div>
       <Menu />
       <AddClaim />
-      <Search />
-      <ClaimsTable setSelectedClaim={setSelectedClaim}/>
+      <Search SearchClaim = {SearchClaim} setSearchClaim = {setSearchClaim}/>
+      <ClaimsTable setSelectedClaim={setSelectedClaim} SearchClaim={SearchClaim}/>
       {SelectedClaim != null && <ClaimDetail claim={SelectedClaim} />}
     </div>
   );

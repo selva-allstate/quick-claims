@@ -1,5 +1,5 @@
 //import { useState } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllClaims } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
 import "./ClaimsTransaction.css";
@@ -16,24 +16,32 @@ const ClaimsTable = (props) => {
     //console.log(clicked_claim);
     const allStatuscodes = claims.map( claim => claim.status_code);
     console.log(allStatuscodes);
+
+    useEffect(() => {
+        if(props.SearchClaim !== "") {
+            console.log("Searching for", props.SearchClaim)
+        }
+    }, [props.SearchClaim]);
+
     const uniqueStatuscodes = [...new Set(allStatuscodes)];
     const uniqueStatuscodes1 =[...uniqueStatuscodes, "All"]
     console.log(uniqueStatuscodes1);
-     
+    
+    
     const [selectedStatuscode, setSelectedStatuscode] =  useState(uniqueStatuscodes1[0]);
     const changeStatuscode = (event) => {
         const option = event.target.options.selectedIndex;
         setSelectedStatuscode(uniqueStatuscodes1[option]);
     }
-    return ( <div>{selectedStatuscode}
-        
+    return ( <div>
+        { props.SearchClaim === "" &&
         <div className="claimStatusSelector">
           <label>Claim Status  </label>
           <select onChange={changeStatuscode}>
             
            {uniqueStatuscodes1.map (statuscode => <option key={statuscode} value={statuscode}>{statuscode}</option>)}
           </select>
-        </div>
+        </div>}
         <table className="claimsTable">
             <thead>
             
@@ -50,7 +58,11 @@ const ClaimsTable = (props) => {
                 {
                 
                 claims.map((claim, index) => {
-                   return((claim.status_code === selectedStatuscode || selectedStatuscode === "All") && (
+                   return(
+                    ((props.SearchClaim === "" && (claim.status_code === selectedStatuscode || selectedStatuscode === "All")) 
+                      || (props.SearchClaim !== "" && claim.claim_number === props.SearchClaim)
+                   
+                   ) && (
                    <ClaimsRow setSelectedClaim={props.setSelectedClaim} 
                    claim={claim}
                     key={index} claimnumber={claim.claim_number} claimdate={claim.claim_date}
