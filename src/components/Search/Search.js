@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Search = (props) => {
     const [localSearchClaim, setlocalSearchClaim] = useState("");
     const [valid,setValid] = useState(true);
     const [touched,setTouched] = useState(false);
+    const navigate = useNavigate();
    
     const checkValidity = (value) => {
         setValid(value.trim().length > 0);
@@ -19,6 +21,16 @@ const Search = (props) => {
          event.preventDefault();
          props.setSearchClaim(localSearchClaim);
          console.log("Search Term", props.SearchClaim);
+         navigate(`/findclaim/${localSearchClaim}`);
+    }
+
+    const clearForm = () => {
+        setlocalSearchClaim("");
+        setTouched(false);
+        setValid(true);
+        props.setSearchClaim("");
+        navigate("/findclaim");
+
     }
     return <div className="searchBox">
         <form onSubmit={doSearch}>
@@ -27,6 +39,7 @@ const Search = (props) => {
                    style={{border: valid ? "2px solid #000" : "2px solid #f00"}}
             />
             <button type="submit" disabled={!valid || !touched}>Search</button>
+            <button onClick={clearForm}>Reset</button>
         </form>
     </div>
 }

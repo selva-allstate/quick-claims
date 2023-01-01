@@ -4,7 +4,7 @@ const Menu = (props) => {
      
     return (
     <div>
-        <h1> Quick Claims Application</h1>
+        <h1> <Link to="/">Quick Claims Application</Link> </h1>
         <ul className="nav">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/addclaim" >New Claim </Link> </li>

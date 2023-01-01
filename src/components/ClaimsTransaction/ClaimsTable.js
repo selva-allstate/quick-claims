@@ -1,11 +1,14 @@
 //import { useState } from "react";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAllClaims } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
 import "./ClaimsTransaction.css";
 
 const ClaimsTable = (props) => {
     
+    const [SearchParams, setSearchParams] = useSearchParams();
+
     const claims = getAllClaims();
     console.log(claims);
     const allClaims = claims.map (claim => claim.claim_number);
@@ -29,9 +32,17 @@ const ClaimsTable = (props) => {
     
     
     const [selectedStatuscode, setSelectedStatuscode] =  useState(uniqueStatuscodes1[0]);
+    
+    useEffect( () => {
+        const statuscode = SearchParams.get("statuscode");
+        if (statuscode !== selectedStatuscode) {
+            setSelectedStatuscode(statuscode);
+        }
+    }, []);
     const changeStatuscode = (event) => {
         const option = event.target.options.selectedIndex;
         setSelectedStatuscode(uniqueStatuscodes1[option]);
+        setSearchParams({ "statuscode" : uniqueStatuscodes1[option]});
     }
     return ( <div>
         { props.SearchClaim === "" &&
