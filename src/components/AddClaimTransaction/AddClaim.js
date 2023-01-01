@@ -35,7 +35,7 @@ const AddClaim = () =>{
     }
      return(
         <form className="addClaimsForm" onSubmit={handleSubmit}>
-        <h2>New transaction</h2>
+        <h2>New Claim Form</h2>
         <label htmlFor="policyNumber">Policy Number</label>
         <input type="text" id="policyNumber" value={newClaim.policyNumber} onChange ={handleChange} />
         <br/>
