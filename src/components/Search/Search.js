@@ -29,7 +29,7 @@ const Search = (props) => {
         setTouched(false);
         setValid(true);
         props.setSearchClaim("");
-        navigate("/findclaim");
+       // navigate("/findclaim");
 
     }
     return <div className="searchBox">

@@ -1,7 +1,6 @@
-//import { useState } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getAllClaims } from "../../data/ClaimsData";
+import { getAllClaims, getAllClaimsForClaimNo } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
 import "./ClaimsTransaction.css";
 
@@ -22,7 +21,8 @@ const ClaimsTable = (props) => {
 
     useEffect(() => {
         if(props.SearchClaim !== "") {
-            console.log("Searching for", props.SearchClaim)
+            console.log("Searching for", props.SearchClaim);
+           
         }
     }, [props.SearchClaim]);
 

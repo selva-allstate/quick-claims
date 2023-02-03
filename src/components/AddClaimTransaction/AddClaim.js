@@ -1,10 +1,11 @@
-//import { useState } from 'react';
+import { useState } from 'react';
 import { useReducer } from 'react';
+import { addNewClaim } from '../../data/ClaimsData';
 import './AddClaim.css';
 
 const AddClaim = () =>{
 
-    //const [message, setMessage] = useState("");
+    const [message, setMessage] = useState("");
 
     const initialNewClaimState ={policyNumber : "", claimNumber :"", claimAmount :"0",
     claimDate : new Date().toISOString().slice(0,10), statusCode:"0", claimType:""}
@@ -27,7 +28,20 @@ const AddClaim = () =>{
 
     const handleSubmit = (event) => {
         event.preventDefault();
-     // addNewClaim(newClaim)
+        setMessage("Saving ...")
+        addNewClaim(newClaim)
+            .then ( response => {
+                if (response.status === 200) {
+                    setMessage("New Transaction added with id" + response.data.id);
+                    console.log(response);
+                }
+                else
+                {
+                setMessage("Something went wrong - status code was " + response.status);
+                }
+            })
+        .catch(error =>{
+            setMessage("Something went wrong" + error);})
      // {
      //   event.preventDefault()
      // };
@@ -55,7 +69,7 @@ const AddClaim = () =>{
         <input type="text"  id="claimType" value={newClaim.claimType} onChange={handleChange} />
         <br/>
         <button type="submit">Save</button>
-        <div>Message goes here</div>
+        <div>{message} </div>
   </form>
   
 

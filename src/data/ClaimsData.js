@@ -18,14 +18,26 @@ export const getAllClaims = () => {
     ]
 }
 
+const headers = new Headers({"Accept" : "application/json"})
+
 //add transaction: POST /api/claim
 //update           PUT api/claim/142645
 
 export const addNewClaim = (claim) =>
 {
-    return axios({url : "http://localhost:8080/api/claim",
+    return axios({url : "http://localhost:8080/api/claims",
                   method:"POST",
                   headers: {"Accept" : "application/json", "Content-Type":"application/json"},
                   data : claim
                 })
 }
+
+export const getAllClaimsForClaimNo = (claimNo) => 
+{
+  return axios({url : "http://localhost:8080/api/claim?claimNumber="+claimNo,
+         method: "GET",
+           headers: {"Accept" : "application/json"}
+})
+}
+
+//}
