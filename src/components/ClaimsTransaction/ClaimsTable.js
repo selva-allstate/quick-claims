@@ -1,58 +1,89 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { getAllClaims, getAllClaimsForClaimNo } from "../../data/ClaimsData";
+import {  useSearchParams } from "react-router-dom";
+import { getAllClaims, getAllClaimsForClaimNo, getAllClaimsForStatuscode } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
+import ClaimStatusSelector from "./ClaimStatusSelector";
 import "./ClaimsTransaction.css";
 
+//debugger
 const ClaimsTable = (props) => {
-    
-    const [SearchParams, setSearchParams] = useSearchParams();
+    const [claims, setClaims] = useState([]);
 
-    const claims = getAllClaims();
-    console.log(claims);
-    const allClaims = claims.map (claim => claim.claim_number);
-    console.log(allClaims);
-    //const [selectedClaim, setSelectedClaim] = useState(allClaims[0]);
-    //const [claimIndex, setClaimIndex] = useState(0);
-    //const clicked_claim = allClaims[claimIndex];
-    //console.log(clicked_claim);
-    const allStatuscodes = claims.map( claim => claim.status_code);
-    console.log(allStatuscodes);
+    const [SearchParams, setSearchParams] = useSearchParams();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if(props.SearchClaim !== "") {
+        if( props.SearchClaim != null && props.SearchClaim !== "") {
             console.log("Searching for", props.SearchClaim);
-           
+            setIsLoading(true);
+
+            getAllClaimsForClaimNo(props.SearchClaim)
+            .then (response => {
+                setIsLoading(false);
+                setClaims([response.data]);
+                console.log("Searching for 2", response );
+                console.log(claims);
+            })
+            .catch( error => {
+                console.log("Something went wrong");
+            })           
         }
     }, [props.SearchClaim]);
 
-    const uniqueStatuscodes = [...new Set(allStatuscodes)];
-    const uniqueStatuscodes1 =[...uniqueStatuscodes, "All"]
-    console.log(uniqueStatuscodes1);
-    
-    
-    const [selectedStatuscode, setSelectedStatuscode] =  useState(uniqueStatuscodes1[0]);
-    
-    useEffect( () => {
-        const statuscode = SearchParams.get("statuscode");
-        if (statuscode !== selectedStatuscode) {
-            setSelectedStatuscode(statuscode);
-        }
-    }, []);
-    const changeStatuscode = (event) => {
-        const option = event.target.options.selectedIndex;
-        setSelectedStatuscode(uniqueStatuscodes1[option]);
-        setSearchParams({ "statuscode" : uniqueStatuscodes1[option]});
+    const loadData = (statuscode) => {
+        if (statuscode == null )
+        {
+        getAllClaims()
+        .then (response => {
+            if (response.status === 200 ) {
+                setIsLoading(false);
+                setClaims(response.data);
+                console.log("claims", response.data)
+;            }
+            else {
+                console.log("Something went wrong", response.status);
+            }
+        })
+        .catch ( error => {
+            console.log("Something went wrong", error);
+        })}
+        else{
+        getAllClaimsForStatuscode(statuscode)
+        .then (response => {
+            if (response.status === 200 ) {
+                console.log(response);
+                setIsLoading(false);
+                setClaims(response.data);
+            }
+            else {
+                console.log("Something went wrong", response.status);
+            }
+        })
+        .catch ( error => {
+            console.log("Something went wrong", error);
+        })
     }
+    }
+
+    const [selectedStatuscode, setSelectedStatuscode] = useState("");
+    useEffect(  () => {
+        const statuscode = SearchParams.get("statuscode");
+        if (statuscode !== selectedStatuscode && props.SearchClaim === "")  {
+            setSelectedStatuscode(statuscode);
+            console.log("Loading", statuscode);
+            loadData(statuscode);
+        }
+    },[SearchParams]);
+
+    const changeStatuscode = (statuscode) => {
+        setSearchParams({"statuscode" : statuscode});
+    }
+
+
     return ( <div>
-        { props.SearchClaim === "" &&
-        <div className="claimStatusSelector">
-          <label>Claim Status  </label>
-          <select onChange={changeStatuscode}>
-            
-           {uniqueStatuscodes1.map (statuscode => <option key={statuscode} value={statuscode}>{statuscode}</option>)}
-          </select>
-        </div>}
+         {!isLoading && props.SearchClaim === "" && <ClaimStatusSelector changeStatuscode={changeStatuscode}  />}
+         {isLoading && <p style={{textAlign:"center"}} >Please wait... loading</p>}
+         {!isLoading &&
         <table className="claimsTable">
             <thead>
             
@@ -66,25 +97,19 @@ const ClaimsTable = (props) => {
                 </tr>
             </thead>
             <tbody>
-                {
-                
-                claims.map((claim, index) => {
-                   return(
-                    ((props.SearchClaim === "" && (claim.status_code === selectedStatuscode || selectedStatuscode === "All")) 
-                      || (props.SearchClaim !== "" && claim.claim_number === props.SearchClaim)
-                   
-                   ) && (
+            {
+                claims 
+                .map((claim, index) => {
+                   return(    
                    <ClaimsRow setSelectedClaim={props.setSelectedClaim} 
                    claim={claim}
-                    key={index} claimnumber={claim.claim_number} claimdate={claim.claim_date}
-                    claimamount={claim.claim_amount} claimtype={claim.claim_type} 
-                    claimstatus={claim.status_code}
-                     />
-                    
-                   ))
-                })}
-                
-                
+                    key={index} claimnumber={claim.claimNumber} claimdate={claim.claimDate}
+                    claimamount={claim.claimAmount} claimtype={claim.claimType} 
+                    claimstatus={claim.statusCode}
+                    />
+                    )
+                })
+            }    
                  {
                  /*
                  claims
@@ -98,10 +123,11 @@ const ClaimsTable = (props) => {
                     
                    )
                 })
-            */
-            }
+                */
+                }
             </tbody>
         </table>
+       } 
         </div>
     );
 };

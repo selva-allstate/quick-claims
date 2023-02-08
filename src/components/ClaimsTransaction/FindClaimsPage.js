@@ -12,14 +12,16 @@ useEffect ( () => {
     if ( params.claimNo != null && params.claimNo !== props.SearchClaim){
         props.setSearchClaim(params.claimNo);
     }
-}, [params.claimNo]
+}, [params]
 
 );
 return(
     <>
        <Search SearchClaim = {props.SearchClaim} setSearchClaim = {props.setSearchClaim}/>
        <ClaimsTable setSelectedClaim={props.setSelectedClaim} SearchClaim={props.SearchClaim}/>
-     {props.SelectedClaim != null && <ClaimDetail claim={props.SelectedClaim} />}
+    {
+     //{props.SelectedClaim != null && <ClaimDetail claim={props.SelectedClaim} />
+    }
     </>
 );
 }

@@ -4,6 +4,7 @@ const ClaimsRow = (props) =>{
      {
       //props.setSelectedClaim(props.claim);
         props.setSelectedClaim(props.claim);
+        console.log("Setting Props.claim", props.claim)
      }
 
     return(

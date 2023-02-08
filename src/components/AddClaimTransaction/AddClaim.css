@@ -1,3 +1,25 @@
 .addClaimsForm {
     text-align: center;
 }
+
+.container
+{
+    border:1px solid #ccc;
+    width:500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+div{
+    background-color: aqua;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+label{
+    width: 150px;
+    display: block;
+    float:left;
+}

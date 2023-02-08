@@ -8,37 +8,42 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import AddClaim from './components/AddClaimTransaction/AddClaim';
 import FindClaimsPage from './components/ClaimsTransaction/FindClaimsPage';
+import { Provider } from 'react-redux';
+import store from './components/store';
 
 function App() {
-  const [SelectedClaim, setSelectedClaim] = useState(null);
-  const [SearchClaim, setSearchClaim] = useState("");
+  const [selectedClaim, setSelectedClaim] = useState(null);
+  const [searchClaim, setSearchClaim] = useState("");
   //setSelectedClaim(SelectedClaim);
    
   return (
     <BrowserRouter>
+    <Provider store = {store} >
       <Menu />
       <Routes>
         <Route path="/addclaim" element = {<AddClaim />} />
         <Route path="/newclaim" element = {<AddClaim />} />
         <Route path="/findclaim" element ={
-         <FindClaimsPage SearchClaim = {SearchClaim} setSearchClaim = {setSearchClaim}
-         setSelectedClaim={setSelectedClaim} SelectedClaim={SelectedClaim}/>
+         <FindClaimsPage SearchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
+         setSelectedClaim={setSelectedClaim} SelectedClaim={selectedClaim}/>
         }/>
         <Route path="/findclaim/:claimNo" element ={ 
-          <FindClaimsPage SearchClaim = {SearchClaim} setSearchClaim = {setSearchClaim}
-          setSelectedClaim={setSelectedClaim} SelectedClaim={SelectedClaim}/>          
+         <> <FindClaimsPage SearchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
+          setSelectedClaim={setSelectedClaim} SelectedClaim={selectedClaim}/>  
+          {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
+         </>
         }/>
         <Route path="/searchclaim" element ={
           <>
-              <Search SearchClaim = {SearchClaim} setSearchClaim = {setSearchClaim}/>
-              <ClaimsTable setSelectedClaim={setSelectedClaim} SearchClaim={SearchClaim}/>
-               {SelectedClaim != null && <ClaimDetail claim={SelectedClaim} />}
+              <Search SearchClaim = {searchClaim} setSearchClaim = {setSearchClaim}/>
+              <ClaimsTable setSelectedClaim={setSelectedClaim} SearchClaim={searchClaim}/>
+               {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
           </>
         }/>
         <Route path="/" element={ <h1>Welcome to Claims Processing System </h1> }/>
         <Route path="*" element={ <h1>Sorry - that page doesn't exist</h1> }/>
       </Routes>
-      
+      </Provider>
     </BrowserRouter>
   );
 }

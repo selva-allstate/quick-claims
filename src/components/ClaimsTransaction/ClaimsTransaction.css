@@ -9,6 +9,7 @@
 
 .claimsTable td, .claimsTable th
 {
+    background-color: bisque;
     padding: 3px;
     border: 1px solid #999;
 }
