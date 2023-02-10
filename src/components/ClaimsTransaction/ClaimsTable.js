@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {  useSearchParams } from "react-router-dom";
-import { getAllClaims, getAllClaimsForClaimNo, getAllClaimsForStatuscode } from "../../data/ClaimsData";
+import { getAllClaims, getAllClaimsForClaimNo, getAllClaimsForPolicyNo, getAllClaimsForStatuscode } from "../../data/ClaimsData";
 import ClaimsRow from "./ClaimsRow";
 import ClaimStatusSelector from "./ClaimStatusSelector";
 import "./ClaimsTransaction.css";
@@ -11,6 +11,20 @@ const ClaimsTable = (props) => {
 
     const [SearchParams, setSearchParams] = useSearchParams();
     const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        if (props.searchPolicyClaim !=null && props.searchPolicyClaim !== ""){
+            console.log("Searching for 0", props.searchPolicyClaim);
+            setIsLoading(true);
+            getAllClaimsForPolicyNo(props.searchPolicyClaim)
+            .then (response => {
+                setIsLoading(false);
+                setClaims(response.data);
+            })
+            .catch(error => {
+                console.log("Something went wrong", error);
+            })
+        }
+    },[props.searchPolicyClaim]);
 
     useEffect(() => {
         if( props.SearchClaim != null && props.SearchClaim !== "") {
@@ -25,7 +39,7 @@ const ClaimsTable = (props) => {
                 console.log(claims);
             })
             .catch( error => {
-                console.log("Something went wrong");
+                console.log("Something went wrong", error);
             })           
         }
     }, [props.SearchClaim]);
@@ -68,7 +82,8 @@ const ClaimsTable = (props) => {
     const [selectedStatuscode, setSelectedStatuscode] = useState("");
     useEffect(  () => {
         const statuscode = SearchParams.get("statuscode");
-        if (statuscode !== selectedStatuscode && props.SearchClaim === "")  {
+        if (statuscode !== selectedStatuscode && props.SearchClaim === "" 
+          )  {
             setSelectedStatuscode(statuscode);
             console.log("Loading", statuscode);
             loadData(statuscode);

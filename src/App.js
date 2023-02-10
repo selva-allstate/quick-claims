@@ -11,10 +11,13 @@ import FindClaimsPage from './components/ClaimsTransaction/FindClaimsPage';
 import { Provider } from 'react-redux';
 import store from './components/store';
 import UpdateClaimPage from './components/UpdateClaimTransaction/UpdateClaimPage';
+import SearchPolicy from './components/Search/SearchPolicy';
+import FindClaimsForPolicy from './components/ClaimsTransaction/FindClaimsForPolicy';
 
 function App() {
   const [selectedClaim, setSelectedClaim] = useState(null);
   const [searchClaim, setSearchClaim] = useState("");
+  const [searchPolicyClaim, setSearchPolicyClaim] = useState("");
   //setSelectedClaim(SelectedClaim);
    
   return (
@@ -42,14 +45,30 @@ function App() {
                {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
           </>
         }/>
+        
         <Route path="/updateclaim/:upclNo" element={
         <>
         <UpdateClaimPage SearchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
         setSelectedClaim={setSelectedClaim} claim={selectedClaim}/>
         
         </>
+
         } />
 
+        <Route path="/searchpolicy" element = {
+          <>
+        <SearchPolicy searchPolicyClaim = {searchPolicyClaim} setSearchPolicyClaim = {setSearchPolicyClaim}
+        setSelectedClaim={setSelectedClaim} claim={selectedClaim}/>
+         
+        </>
+        } />
+         <Route path="/searchpolicy/:srchpol" element = {
+          <>
+        <FindClaimsForPolicy searchPolicyClaim = {searchPolicyClaim} setSearchPolicyClaim = {setSearchPolicyClaim}
+        setSelectedClaim={setSelectedClaim} claim={selectedClaim}/>
+        {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
+        </>
+      }/>
         <Route path="/" element={ <h1>Welcome to Claims Processing System </h1> }/>
         <Route path="*" element={ <h1>Sorry - that page doesn't exist</h1> }/>
       </Routes>

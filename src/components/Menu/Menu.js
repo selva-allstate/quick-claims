@@ -8,8 +8,8 @@ const Menu = (props) => {
         <ul className="nav">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/addclaim" >New Claim </Link> </li>
-            <li><Link to="/findclaim/:claimNo">Find Claim</Link></li>
             <li><Link to="/searchclaim">Search Claim</Link></li>
+            <li><Link to="/searchpolicy">Search Policy</Link></li>
         </ul>
     </div>);
 }

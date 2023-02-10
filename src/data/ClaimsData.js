@@ -52,5 +52,12 @@ export const getAllClaimsForClaimNo = (claimNo) =>
                headers: {"Accept" : "application/json"}
 })
 }
+export const getAllClaimsForPolicyNo = (policyNo) => 
+{
+  return axios({url : "http://localhost:8080/api/claims?policyNo="+policyNo,
+               method: "GET",
+               headers: {"Accept" : "application/json"}
+})
+}
 
 //}
