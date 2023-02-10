@@ -14,6 +14,14 @@ export const addNewClaim = (claim) =>
                   data : claim
                 })
 }
+export const updateClaimData = (claimNo, claim) =>
+{
+    return axios({url : "http://localhost:8080/api/claims/"+claimNo,
+                  method:"PUT",
+                  headers:{"Accept" : "application/json", "Content-Type" : "application/json"},
+                  data : claim    
+                            })
+}
 export const getAllClaimsForStatuscode = (statusCode) =>
 {
   return axios ( {url : "http://localhost:8080/api/claims/status/"+statusCode,

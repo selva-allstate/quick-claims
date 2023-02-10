@@ -94,6 +94,7 @@ const ClaimsTable = (props) => {
                     <th>Claim Type</th>
                     <th>Claim Status</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

@@ -18,10 +18,13 @@ useEffect ( () => {
 return(
     <>
        <Search SearchClaim = {props.SearchClaim} setSearchClaim = {props.setSearchClaim}/>
+       
        <ClaimsTable setSelectedClaim={props.setSelectedClaim} SearchClaim={props.SearchClaim}/>
-    {
-     //{props.SelectedClaim != null && <ClaimDetail claim={props.SelectedClaim} />
-    }
+     {
+     /*
+      {props.SelectedClaim != null && params.claimNo !=null} && <ClaimDetail claim={props.SelectedClaim} />
+     */
+     }
     </>
 );
 }
