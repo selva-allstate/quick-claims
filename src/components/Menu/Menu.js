@@ -10,6 +10,7 @@ const Menu = (props) => {
             <li><Link to="/addclaim" >New Claim </Link> </li>
             <li><Link to="/searchclaim">Search Claim</Link></li>
             <li><Link to="/searchpolicy">Search Policy</Link></li>
+            <li><Link to= "/help">Help</Link></li>
         </ul>
     </div>);
 }

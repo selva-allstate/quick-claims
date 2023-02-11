@@ -29,7 +29,9 @@ return(
        {console.log("props.searchPolicyClaim", props.searchPolicyClaim)};
        <ClaimsTable searchPolicyClaim = {props.searchPolicyClaim} setSearchPolicyClaim = {props.setSearchPolicyClaim}
        setSelectedClaim={props.setSelectedClaim} />
+     
        {props.selectedClaim != null && <ClaimDetail claim={props.selectedClaim} />}
+    
       {
      /*
       {props.SelectedClaim != null && params.srchpol !=null} && <ClaimDetail claim={props.SelectedClaim} />

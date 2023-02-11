@@ -21,7 +21,7 @@ const SearchPolicy = (props) =>{
          event.preventDefault();
          props.setSearchPolicyClaim(localSearchPolicy);
          console.log("Search Term", localSearchPolicy);
-         navigate(`/searchpolicy/${localSearchPolicy}`);
+         navigate(`/findpolicy/${localSearchPolicy}`);
     }
     const clearForm = () => {
         setlocalSearchPolicy("");

@@ -13,6 +13,7 @@ import store from './components/store';
 import UpdateClaimPage from './components/UpdateClaimTransaction/UpdateClaimPage';
 import SearchPolicy from './components/Search/SearchPolicy';
 import FindClaimsForPolicy from './components/ClaimsTransaction/FindClaimsForPolicy';
+import Help from './components/Help/Help';
 
 function App() {
   const [selectedClaim, setSelectedClaim] = useState(null);
@@ -62,13 +63,21 @@ function App() {
          
         </>
         } />
-         <Route path="/searchpolicy/:srchpol" element = {
+         <Route path="/findpolicy" element = {
           <>
         <FindClaimsForPolicy searchPolicyClaim = {searchPolicyClaim} setSearchPolicyClaim = {setSearchPolicyClaim}
         setSelectedClaim={setSelectedClaim} claim={selectedClaim}/>
         {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
         </>
       }/>
+         <Route path="/findpolicy/:srchpol" element = {
+          <>
+        <FindClaimsForPolicy searchPolicyClaim = {searchPolicyClaim} setSearchPolicyClaim = {setSearchPolicyClaim}
+        setSelectedClaim={setSelectedClaim} claim={selectedClaim}/>
+        {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
+        </>
+      }/>
+      <Route path="/help" element = {<Help />} />
         <Route path="/" element={ <h1>Welcome to Claims Processing System </h1> }/>
         <Route path="*" element={ <h1>Sorry - that page doesn't exist</h1> }/>
       </Routes>

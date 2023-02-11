@@ -8,12 +8,13 @@ import "./ClaimsTransaction.css";
 //debugger
 const ClaimsTable = (props) => {
     const [claims, setClaims] = useState([]);
-
+    const [errorMessage, setErrorMessage] = useState(null);
     const [SearchParams, setSearchParams] = useSearchParams();
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         if (props.searchPolicyClaim !=null && props.searchPolicyClaim !== ""){
             console.log("Searching for 0", props.searchPolicyClaim);
+            setErrorMessage(null);
             setIsLoading(true);
             getAllClaimsForPolicyNo(props.searchPolicyClaim)
             .then (response => {
@@ -21,7 +22,13 @@ const ClaimsTable = (props) => {
                 setClaims(response.data);
             })
             .catch(error => {
-                console.log("Something went wrong", error);
+                if (error.message ="Request failed with status code 404"){
+                    setErrorMessage("Policy Number not found. Please try another Policy Number");
+                }
+                else {
+                    setErrorMessage("Something went wrong", error);
+                    console.log("Something went wrong", error);
+                }
             })
         }
     },[props.searchPolicyClaim]);
@@ -30,7 +37,7 @@ const ClaimsTable = (props) => {
         if( props.SearchClaim != null && props.SearchClaim !== "") {
             console.log("Searching for", props.SearchClaim);
             setIsLoading(true);
-
+            setErrorMessage(null);
             getAllClaimsForClaimNo(props.SearchClaim)
             .then (response => {
                 setIsLoading(false);
@@ -39,7 +46,13 @@ const ClaimsTable = (props) => {
                 console.log(claims);
             })
             .catch( error => {
-                console.log("Something went wrong", error);
+                if (error.message ="Request failed with status code 404"){
+                    setErrorMessage("Claim Number not found. Please try another Claim Number");
+                }
+                else {
+                    setErrorMessage("Something went wrong", error);
+                    console.log("Something went wrong", error);
+                }
             })           
         }
     }, [props.SearchClaim]);
@@ -47,6 +60,7 @@ const ClaimsTable = (props) => {
     const loadData = (statuscode) => {
         if (statuscode == null )
         {
+        setErrorMessage(null);
         getAllClaims()
         .then (response => {
             if (response.status === 200 ) {
@@ -59,9 +73,11 @@ const ClaimsTable = (props) => {
             }
         })
         .catch ( error => {
+            setErrorMessage("Something went wrong", error);
             console.log("Something went wrong", error);
         })}
         else{
+            setErrorMessage(null);
         getAllClaimsForStatuscode(statuscode)
         .then (response => {
             if (response.status === 200 ) {
@@ -74,6 +90,7 @@ const ClaimsTable = (props) => {
             }
         })
         .catch ( error => {
+            setErrorMessage("Something went wrong", error);
             console.log("Something went wrong", error);
         })
     }
@@ -97,7 +114,8 @@ const ClaimsTable = (props) => {
 
     return ( <div>
          {!isLoading && props.SearchClaim === "" && <ClaimStatusSelector changeStatuscode={changeStatuscode}  />}
-         {isLoading && <p style={{textAlign:"center"}} >Please wait... loading</p>}
+         {isLoading && !errorMessage && <p style={{textAlign:"center"}} >Please wait... loading</p>}
+         {isLoading && errorMessage && <p style={{textAlign:"center"}}>{errorMessage}</p>}
          {!isLoading &&
         <table className="claimsTable">
             <thead>
