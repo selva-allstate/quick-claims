@@ -48,20 +48,7 @@ function App() {
                {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
           </>
         }/>
-        <Route path="updateclaim/:upclNo1/task/:task1" element={
-          <>
-          <UpdateTask searchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
-          setSelectedClaim = {setSelectedClaim} claim={selectedClaim} />
-          
-          </>
-        } />
-        <Route path="updateclaim/:upclNo1/task" element={
-          <>
-          <AddTask searchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
-          setSelectedClaim = {setSelectedClaim} claim={selectedClaim} />
-          </>
-        }/>
-        <Route path="/updateclaim/:upclNo" element={
+         <Route path="/updateclaim/:upclNo" element={
         <>
         <UpdateClaimPage SearchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
         setSelectedClaim={setSelectedClaim} claim={selectedClaim}/>
@@ -69,7 +56,20 @@ function App() {
         </>
 
         } />
-
+         <Route path="updateclaim/:upclNo1/task" element={
+          <>
+          <AddTask searchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
+          setSelectedClaim = {setSelectedClaim} claim={selectedClaim} />
+          </>
+        }/>
+        <Route path="updateclaim/:upclNo2/task/:task1" element={
+          <>
+          <UpdateTask searchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
+          setSelectedClaim = {setSelectedClaim} claim={selectedClaim} />
+          
+          </>
+        } />
+       
         <Route path="/searchpolicy" element = {
           <>
         <SearchPolicy searchPolicyClaim = {searchPolicyClaim} setSearchPolicyClaim = {setSearchPolicyClaim}

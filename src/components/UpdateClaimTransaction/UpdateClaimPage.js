@@ -1,60 +1,136 @@
 import { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
-import { updateClaimData } from "../../data/ClaimsData";
+import { getAllTasksForClaimNo, updateClaimData } from "../../data/ClaimsData";
 
 const UpdateClaimPage = (props) =>
 {
+    const [tasks, setTasks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    
+    const [message, setMessage] = useState("");
+    const params = useParams();
 
-const params = useParams();
-useEffect ( () => {
-    if ( params.upclNo != null && params.upclNo !== props.SearchClaim){
+   useEffect ( () => {
+    console.log("Inside Use Effect");
+    console.log("Params",params.upclNo);
+    if ( params.upclNo != null  && params.upclNo !== props.SearchClaim) {
         props.setSearchClaim(params.upclNo);
-    }
-}, [params]);
 
-const [message, setMessage] = useState("");
-const initialNewClaimState ={claimNumber : props.claim.claimNumber, policyNumber : props.claim.policyNumber, customerName : props.claim.customerName, claimAmount : props.claim.claimAmount,
-claimDate : props.claim.claimDate, claimReason :props.claim.claimReason, statusCode:props.claim.statusCode, claimType:props.claim.claimType, animalType:props.claim.animalType,
-animalBreed:props.claim.animalBreed, vehicleMake:props.claim.vehicleMake, vehicleModel:props.claim.vehicleModel, vehicleManyear:props.claim.vehicleManyear,
-propertyAddress:props.claim.propertyAddress, anyotherDetails:props.claim.anyotherDetails}
+            setMessage(null);
+            setIsLoading(true);
+            getAllTasksForClaimNo(params.upclNo)
+            .then ( response => {
+                if (response.status === 200) {
+                 setIsLoading(false);
+                 setTasks(response.data);
+                 console.log("Tasks", response.data);
+                }
+            })
+            .catch(error => {
+                if (error.message === "Request failed with status code 404"){
+                    console.log("Tasks not found for the claim Number");
+                }
+                else {
+                    
+                    console.log("Something went wrong", error);
+                }
+            })
+            
+    }
+  }, [params]);
+ const initialNewClaimState ={claimNumber : props.claim.claimNumber, policyNumber : props.claim.policyNumber, customerName : props.claim.customerName, claimAmount : props.claim.claimAmount,
+ claimDate : props.claim.claimDate, claimReason :props.claim.claimReason, statusCode:props.claim.statusCode, claimType:props.claim.claimType, animalType:props.claim.animalType,
+ animalBreed:props.claim.animalBreed, vehicleMake:props.claim.vehicleMake, vehicleModel:props.claim.vehicleModel, vehicleManyear:props.claim.vehicleManyear,
+ propertyAddress:props.claim.propertyAddress, anyotherDetails:props.claim.anyotherDetails}
 /*
 state = {policyNumber : "", customerName :"", claimAmount :"0",
 claimDate : new Date().toISOString().slice(0,10), statusCode:"0", claimType:""}
 data = {field : "claimAmount", value : "300" }
 */
-const formReducer = (state, data) => {
+  const formReducer = (state, data) => {
     return{...state, [data.field] : data.value}
-}
+ }
 //const [statefulVariable, setterFunction] = useReducer(reducerFunction, initialValue)
-const [newClaim, dispatch] = useReducer(formReducer, initialNewClaimState);
+  const [newClaim, dispatch] = useReducer(formReducer, initialNewClaimState);
 
-const handleChange = (event) => {
+ const handleChange = (event) => {
     //event.target.id = the field
     //event.target.value = the value
     dispatch({field : event.target.id, value : event.target.value})
-}
+ }
 
-const handleSubmit = (event) => {
+ const handleSubmit = (event) => {
     event.preventDefault();
-    setMessage("Saving ...")
-    updateClaimData(params.upclNo,newClaim)
-        .then ( response => {
-            if (response.status === 200) {
-                setMessage("Claim updated with id" + response.data.claimNumber);
-                console.log(response);
+    console.log("new claim statuscode", newClaim.statusCode); 
+    if (newClaim.statusCode === "3" || newClaim.statusCode === "4" )   
+        {
+        
+            const checktaskstatus = tasks.map(task => task.taskStatus);
+            console.log("checktask status", checktaskstatus);
+            if (checktaskstatus.length === 0) {
+                setMessage("Saving ...")
+                updateClaimData(params.upclNo,newClaim)
+                .then ( response => {
+                    if (response.status === 200) {
+                        setMessage("Claim updated with id" + response.data.claimNumber);
+                        console.log(response);
+                    }
+                    else
+                    {
+                    setMessage("Something went wrong - status code was " + response.status);
+                    }
+                    })
+                .catch(error =>{
+                    setMessage("Something went wrong" + error);})   
             }
-            else
-            {
-            setMessage("Something went wrong - status code was " + response.status);
-            }
-        })
-    .catch(error =>{
-        setMessage("Something went wrong" + error);})
- // {
- //   event.preventDefault()
- // };
+            if (checktaskstatus.length > 0) {
+                const taskwithopenstatus = checktaskstatus.filter(task => task === 'open' );
+                if (taskwithopenstatus.length > 0){
+                    setMessage("Claim has open Tasks. Please close the tasks");
+                } 
+                else
+                {
+                    setMessage("Saving ...");
+                    updateClaimData(params.upclNo,newClaim)
+                    .then ( response => {
+                        if (response.status === 200) {
+                            setMessage("Claim updated with id" + response.data.claimNumber);
+                            console.log(response);
+                        }
+                        else
+                        {
+                        setMessage("Something went wrong - status code was " + response.status);
+                        }
+                    })
+                    .catch(error =>{
+                        setMessage("Something went wrong" + error);
+                    });
+                     
+                }
+            } 
+        }
+    else {
+                setMessage("Saving ...");
+                updateClaimData(params.upclNo,newClaim)
+                    .then ( response => {
+                        if (response.status === 200) {
+                            setMessage("Claim updated with id" + response.data.claimNumber);
+                            console.log(response);
+                        }
+                        else
+                        {
+                        setMessage("Something went wrong - status code was " + response.status);
+                        }
+                    })
+                    .catch(error =>{
+                        setMessage("Something went wrong" + error);
+                    });
+        }
 
-}
+}      
+
+  
+
 
 
 

@@ -22,7 +22,7 @@ const ClaimsTable = (props) => {
                 setClaims(response.data);
             })
             .catch(error => {
-                if (error.message ="Request failed with status code 404"){
+                if (error.message === "Request failed with status code 404"){
                     setErrorMessage("Policy Number not found. Please try another Policy Number");
                 }
                 else {
@@ -46,7 +46,7 @@ const ClaimsTable = (props) => {
                 console.log(claims);
             })
             .catch( error => {
-                if (error.message ="Request failed with status code 404"){
+                if (error.message === "Request failed with status code 404"){
                     setErrorMessage("Claim Number not found. Please try another Claim Number");
                 }
                 else {

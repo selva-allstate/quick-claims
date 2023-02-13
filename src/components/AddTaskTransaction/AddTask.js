@@ -12,11 +12,7 @@ const AddTask = (props) =>{
     const params = useParams();
     const navigate = useNavigate();
 
-    const updatetask = () =>
-    {
-       
-       navigate(`/updateclaim/${props.claimnumber}/task/${props.tasknumber}`)
-    }
+    
 
     useEffect ( () => 
     {
@@ -35,7 +31,7 @@ const AddTask = (props) =>{
                 }
             })
             .catch(error => {
-                if (error.message ="Request failed with status code 404"){
+                if (error.message ==="Request failed with status code 404"){
                     setErrorMessage("Tasks not found for the claim Number");
                 }
                 else {
