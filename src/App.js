@@ -14,6 +14,8 @@ import UpdateClaimPage from './components/UpdateClaimTransaction/UpdateClaimPage
 import SearchPolicy from './components/Search/SearchPolicy';
 import FindClaimsForPolicy from './components/ClaimsTransaction/FindClaimsForPolicy';
 import Help from './components/Help/Help';
+import AddTask from './components/AddTaskTransaction/AddTask';
+import UpdateTask from './components/UpdateTaskTransaction/UpdateTask';
 
 function App() {
   const [selectedClaim, setSelectedClaim] = useState(null);
@@ -46,7 +48,19 @@ function App() {
                {selectedClaim != null && <ClaimDetail claim={selectedClaim} />}
           </>
         }/>
-        
+        <Route path="updateclaim/:upclNo1/task/:task1" element={
+          <>
+          <UpdateTask searchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
+          setSelectedClaim = {setSelectedClaim} claim={selectedClaim} />
+          
+          </>
+        } />
+        <Route path="updateclaim/:upclNo1/task" element={
+          <>
+          <AddTask searchClaim = {searchClaim} setSearchClaim = {setSearchClaim}
+          setSelectedClaim = {setSelectedClaim} claim={selectedClaim} />
+          </>
+        }/>
         <Route path="/updateclaim/:upclNo" element={
         <>
         <UpdateClaimPage SearchClaim = {searchClaim} setSearchClaim = {setSearchClaim}

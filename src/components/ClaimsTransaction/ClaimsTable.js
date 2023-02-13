@@ -128,6 +128,7 @@ const ClaimsTable = (props) => {
                     <th>Claim Status</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

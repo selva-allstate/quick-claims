@@ -59,7 +59,7 @@ const handleSubmit = (event) => {
 
 
 return(
-    <form className="addClaimsForm" onSubmit={handleSubmit}>
+    <form className="updateClaimsForm" onSubmit={handleSubmit}>
     <div className="container">
     <h2>Update Claim Form</h2>
     <label htmlFor="claimNumber">Claim Number</label>
